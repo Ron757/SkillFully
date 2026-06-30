@@ -357,7 +357,7 @@ async function handleRequest(request: JsonRpcRequest): Promise<void> {
             },
           },
           serverInfo: {
-            name: 'skillfully',
+            name: '@ron757/skillfully',
             version: '0.2.0',
           },
         })

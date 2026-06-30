@@ -9,13 +9,13 @@ Works as an **MCP server** (any MCP host: Cursor, Codex, Gemini CLI) or as a **s
 ## Installation
 
 ```bash
-npm install -g skillfully
+npm install -g @ron757/skillfully
 ```
 
 Or without installing:
 
 ```bash
-npx skillfully-mcp
+npx -p @ron757/skillfully skillfully-mcp
 ```
 
 Requires [Node.js 18+](https://nodejs.org) or [Bun](https://bun.sh).
@@ -23,7 +23,7 @@ Requires [Node.js 18+](https://nodejs.org) or [Bun](https://bun.sh).
 ## One-command setup
 
 ```bash
-npx skillfully --setup
+npx -p @ron757/skillfully skillfully --setup
 ```
 
 This prints the MCP config snippet for your host (Cursor, Codex, Gemini CLI, etc.):
@@ -34,7 +34,7 @@ This prints the MCP config snippet for your host (Cursor, Codex, Gemini CLI, etc
   "mcpServers": {
     "skillfully": {
       "command": "npx",
-      "args": ["skillfully-mcp"]
+      "args": ["-p", "@ron757/skillfully", "skillfully-mcp"]
     }
   }
 }
@@ -97,7 +97,7 @@ skillfully import skills.sh vercel-labs/agent-skills --skill frontend-design
 
 ## For Cursor / Codex / Gemini CLI
 
-Run `npx skillfully --setup` once per project — it prints the exact config snippet to paste into your MCP settings. No absolute paths needed.
+Run `npx -p @ron757/skillfully skillfully --setup` once per project — it prints the exact config snippet to paste into your MCP settings. No absolute paths needed.
 
 At the **start of every chat thread**, the host calls `skills_init` to set up guardrails and confirm readiness. This returns:
 

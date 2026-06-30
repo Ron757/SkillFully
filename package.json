@@ -1,9 +1,9 @@
 {
-  "name": "skillfully",
+  "name": "@ron757/skillfully",
   "version": "0.2.0",
   "type": "module",
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com/"
   },
   "description": "Skill orchestration layer for coding agents — MCP server, permissions, auto-fetch from skills.sh",
   "bin": {

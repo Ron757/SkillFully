@@ -149,7 +149,7 @@ function printSetup(): void {
     mcpServers: {
       skillfully: {
         command: 'npx',
-        args: ['skillfully-mcp'],
+        args: ['-p', '@ron757/skillfully', 'skillfully-mcp'],
       },
     },
   }
@@ -163,7 +163,7 @@ function printSetup(): void {
   console.log('──────── Codex (~/.codex/config.toml) ────────')
   console.log(`[mcp_servers.skillfully]
 command = "npx"
-args = ["skillfully-mcp"]`)
+args = ["-p", "@ron757/skillfully", "skillfully-mcp"]`)
 }
 
 async function main(): Promise<void> {
