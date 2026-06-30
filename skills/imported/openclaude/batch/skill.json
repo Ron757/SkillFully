@@ -1,0 +1,21 @@
+{
+  "id": "openclaude:batch",
+  "name": "batch",
+  "description": "Research and plan a large-scale change, then execute it in parallel across 5–30 isolated worktree agents that each open a PR.",
+  "tags": [
+    "imported",
+    "openclaude",
+    "bundled"
+  ],
+  "examples": [
+    "Use when the user wants to make a sweeping, mechanical change across many files (migrations, refactors, bulk renames) that can be decomposed into independent parallel units."
+  ],
+  "entry": {
+    "type": "prompt",
+    "command": []
+  },
+  "import": {
+    "source": "openclaude",
+    "sourcePath": "/Users/ron/Documents/Skills MCP/openclaude-main/src/skills/bundled/batch.ts"
+  }
+}

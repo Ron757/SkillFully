@@ -1,0 +1,19 @@
+{
+  "id": "openclaude:debug",
+  "name": "debug",
+  "description": "ant",
+  "tags": [
+    "imported",
+    "openclaude",
+    "bundled"
+  ],
+  "examples": [],
+  "entry": {
+    "type": "prompt",
+    "command": []
+  },
+  "import": {
+    "source": "openclaude",
+    "sourcePath": "/Users/ron/Documents/Skills MCP/openclaude-main/src/skills/bundled/debug.ts"
+  }
+}

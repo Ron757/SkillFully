@@ -1,0 +1,21 @@
+{
+  "id": "openclaude:claude-in-chrome",
+  "name": "claude-in-chrome",
+  "description": "Automates your Chrome browser to interact with web pages - clicking elements, filling forms, capturing screenshots, reading console logs, and navigating sites. Opens pages in new tabs within your existing Chrome session. Requires site-level permissions before executing (configured in the extension).",
+  "tags": [
+    "imported",
+    "openclaude",
+    "bundled"
+  ],
+  "examples": [
+    "When the user wants to interact with web pages, automate browser tasks, capture screenshots, read console logs, or perform any browser-based actions. Always invoke BEFORE attempting to use any mcp__claude-in-chrome__* tools."
+  ],
+  "entry": {
+    "type": "prompt",
+    "command": []
+  },
+  "import": {
+    "source": "openclaude",
+    "sourcePath": "/Users/ron/Documents/Skills MCP/openclaude-main/src/skills/bundled/claudeInChrome.ts"
+  }
+}

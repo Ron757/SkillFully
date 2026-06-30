@@ -1,0 +1,19 @@
+{
+  "id": "openclaude:claude-api",
+  "name": "claude-api",
+  "description": "Build apps with the Claude API or Anthropic SDK.n",
+  "tags": [
+    "imported",
+    "openclaude",
+    "bundled"
+  ],
+  "examples": [],
+  "entry": {
+    "type": "prompt",
+    "command": []
+  },
+  "import": {
+    "source": "openclaude",
+    "sourcePath": "/Users/ron/Documents/Skills MCP/openclaude-main/src/skills/bundled/claudeApi.ts"
+  }
+}

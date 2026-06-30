@@ -1,0 +1,19 @@
+{
+  "id": "openclaude:keybindings-help",
+  "name": "keybindings-help",
+  "description": "Use when the user wants to customize keyboard shortcuts, rebind keys, add chord bindings, or modify ~/.claude/keybindings.json. Examples: \"rebind ctrl+s\", \"add a chord shortcut\", \"change the submit key\", \"customize keybindings\".",
+  "tags": [
+    "imported",
+    "openclaude",
+    "bundled"
+  ],
+  "examples": [],
+  "entry": {
+    "type": "prompt",
+    "command": []
+  },
+  "import": {
+    "source": "openclaude",
+    "sourcePath": "/Users/ron/Documents/Skills MCP/openclaude-main/src/skills/bundled/keybindings.ts"
+  }
+}

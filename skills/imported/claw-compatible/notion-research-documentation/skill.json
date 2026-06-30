@@ -1,0 +1,18 @@
+{
+  "id": "claw-compatible:notion-research-documentation",
+  "name": "notion-research-documentation",
+  "description": "Research across Notion and synthesize into structured documentation; use when gathering info from multiple Notion sources to produce briefs, comparisons, or reports with citations.",
+  "tags": [
+    "imported",
+    "claw-compatible"
+  ],
+  "entry": {
+    "type": "prompt",
+    "command": []
+  },
+  "import": {
+    "source": "claw-compatible",
+    "sourcePath": "/Users/ron/.codex/skills/notion-research-documentation",
+    "discoveredRoot": "/Users/ron/.codex/skills"
+  }
+}

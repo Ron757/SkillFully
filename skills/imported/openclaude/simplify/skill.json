@@ -1,0 +1,19 @@
+{
+  "id": "openclaude:simplify",
+  "name": "simplify",
+  "description": "Review changed code for reuse, quality, and efficiency, then fix any issues found.",
+  "tags": [
+    "imported",
+    "openclaude",
+    "bundled"
+  ],
+  "examples": [],
+  "entry": {
+    "type": "prompt",
+    "command": []
+  },
+  "import": {
+    "source": "openclaude",
+    "sourcePath": "/Users/ron/Documents/Skills MCP/openclaude-main/src/skills/bundled/simplify.ts"
+  }
+}
