@@ -2,6 +2,9 @@
   "name": "skillfully",
   "version": "0.2.0",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Skill orchestration layer for coding agents — MCP server, permissions, auto-fetch from skills.sh",
   "bin": {
     "skillfully": "./dist/cli.js",
