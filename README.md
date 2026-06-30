@@ -20,6 +20,16 @@ npx -p @ron757/skillfully skillfully-mcp
 
 Requires [Node.js 18+](https://nodejs.org) or [Bun](https://bun.sh).
 
+> **GitHub Packages auth:** Add a `.npmrc` in your project root:
+> ```
+> @ron757:registry=https://npm.pkg.github.com/
+> ```
+> And set a GitHub classic token (scope: `read:packages`) in your global `~/.npmrc`:
+> ```
+> //npm.pkg.github.com/:_authToken=ghp_...
+> ```
+> Create a token at [github.com/settings/tokens](https://github.com/settings/tokens).
+
 ## One-command setup
 
 ```bash
@@ -47,7 +57,7 @@ Paste that into your MCP config file. Done.
 ### MCP server
 
 ```bash
-npx skillfully-mcp
+npx -p @ron757/skillfully skillfully-mcp
 ```
 
 The host calls tools, the server responds. Supported tools:
@@ -68,7 +78,13 @@ The host calls tools, the server responds. Supported tools:
 
 ```bash
 # List loaded skills
-skillfully skills list
+skillfully list
+
+# Inspect a skill
+skillfully inspect <skill-id>
+
+# Show project setup status
+skillfully init
 
 # Find a skill for a task
 skillfully plan "research topic and draft notes"
@@ -91,7 +107,7 @@ skillfully import skills.sh vercel-labs/agent-skills --list
 skillfully import skills.sh vercel-labs/agent-skills --skill frontend-design
 ```
 
-`skillfully` and `skills` are both available — use whichever you prefer.
+`skillfully` and `skills` are both available — use whichever you prefer. `skillfully skills list` and `skillfully skills inspect` also work as aliases.
 
 ---
 
@@ -116,6 +132,13 @@ skills_init({ mode: "read-only" })
 ```
 
 This makes guardrails **universally applied** — every MCP host gets the same enforcement.
+
+**Base skills** ship with the package and appear on first `skillfully list`:
+`guardrails-check`, `permissions-audit`, `file-reader`, `shell-runner`, `research`.
+
+**Auto-fetch on empty registry:** When `skills_init` detects fewer than 3 skills,
+it automatically downloads matching skills from skills.sh in the background for
+common categories (shell, file, research, git, notion).
 
 ---
 
