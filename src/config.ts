@@ -1,7 +1,15 @@
 import { existsSync, readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { homedir } from 'node:os'
-import { join, resolve } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 import type { AutoFetchConfig, PermissionConfig, RuntimeConfig } from './types.js'
+
+const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+
+const PACKAGE_SKILL_ROOTS = [
+  join(PACKAGE_ROOT, 'skills'),
+  join(PACKAGE_ROOT, '.agents', 'skills'),
+]
 
 const DEFAULT_CONFIG: RuntimeConfig = {
   skillRoots: [
@@ -10,6 +18,7 @@ const DEFAULT_CONFIG: RuntimeConfig = {
     './.codex/skills',
     './.claude/skills',
     './.claw/skills',
+    ...PACKAGE_SKILL_ROOTS,
   ],
   plannerTopK: 8,
   maxPlanSteps: 3,
@@ -81,6 +90,7 @@ export function loadConfig(cwd: string): RuntimeConfig {
 
   return {
     skillRoots: unique([
+      ...PACKAGE_SKILL_ROOTS,
       ...(parsed.skillRoots ?? DEFAULT_CONFIG.skillRoots),
       ...envRoots,
       ...homeRoots,

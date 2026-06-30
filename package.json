@@ -21,7 +21,11 @@
     "dist",
     "src",
     "docs",
+    "skills",
+    ".agents",
+    ".cursor",
     "README.md",
     "skill-layer.config.json"
-  ]
+  ],
+  "postinstall": "node -e \"console.log('\\n  SkillFully installed! Run `skillfully --setup` to configure for this project.\\n  MCP server: `skillfully-mcp`\\n  Docs: https://github.com/Ron757/SkillFully\\n')\""
 }

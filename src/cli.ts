@@ -1,3 +1,5 @@
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { cwd } from 'node:process'
 import { autoFetchSkills, searchSkillsSh } from './auto-fetch.js'
 import { loadConfig } from './config.js'
@@ -111,6 +113,28 @@ function inspectSkill(skillId: string): void {
 
 function printSetup(): void {
   const projectRoot = cwd()
+
+  // Create default config if none exists
+  const configPath = join(projectRoot, 'skill-layer.config.json')
+  if (!existsSync(configPath)) {
+    const defaultConfig = {
+      skillRoots: ['./skills', './.agents/skills', './.codex/skills', './.claude/skills', './.claw/skills'],
+      plannerTopK: 8,
+      maxPlanSteps: 3,
+      permissions: {
+        mode: 'full-access',
+        allow: [],
+        deny: [],
+        ask: [],
+        trustedRoots: [],
+      },
+    }
+    mkdirSync(projectRoot, { recursive: true })
+    writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2) + '\n')
+    console.log(`Created default config: ${configPath}`)
+    console.log()
+  }
+
   const config = loadConfig(projectRoot)
   const registry = loadRegistry(projectRoot, config)
 
@@ -281,6 +305,14 @@ async function main(): Promise<void> {
     const config = loadConfig(cwd())
     const registry = loadRegistry(cwd(), config)
     const result = await autoFetchSkills(task, registry, config.autoFetch!, cwd())
+    console.log(JSON.stringify(result, null, 2))
+    return
+  }
+
+  // Default to run for bare tasks — skillfully "optimize images" just works
+  const bareTask = [command, subcommand, ...subcommandRest].filter(Boolean).join(' ').trim()
+  if (bareTask) {
+    const result = await executePlan(loadRegistry(cwd()), bareTask, cwd())
     console.log(JSON.stringify(result, null, 2))
     return
   }
