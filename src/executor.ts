@@ -2,7 +2,7 @@ import { spawn } from 'node:child_process'
 import { loadConfig } from './config.js'
 import { PermissionEnforcer, PermissionPolicy } from './permissions.js'
 import { buildPlan } from './planner.js'
-import type { ExecutionContext, ExecutionResult, ExecutionStepResult, PlannedStep, SkillDefinition, SkillRegistry } from './types.js'
+import type { ExecutionContext, ExecutionResult, ExecutionStepResult, PermissionConfig, PlannedStep, SkillDefinition, SkillRegistry } from './types.js'
 
 function renderPrompt(skill: SkillDefinition, task: string, artifacts: Record<string, unknown>): string {
   const expectedOutputs = skill.produces.length > 0 ? skill.produces.join(', ') : 'none declared'
@@ -139,10 +139,11 @@ export async function executePlan(
   registry: SkillRegistry,
   task: string,
   cwd: string,
+  permissions?: PermissionConfig,
 ): Promise<ExecutionResult> {
   const config = loadConfig(cwd)
   const plan = buildPlan(task, registry, {}, config)
-  const enforcer = new PermissionEnforcer(new PermissionPolicy(config.permissions))
+  const enforcer = new PermissionEnforcer(new PermissionPolicy(permissions ?? config.permissions))
   const context: ExecutionContext = {
     cwd,
     task,

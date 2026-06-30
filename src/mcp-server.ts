@@ -161,9 +161,19 @@ function toolDefinitions() {
   ]
 }
 
+let sessionModeOverride: PermissionMode | undefined
+
+function effectiveConfig(projectCwd: string) {
+  const config = loadConfig(projectCwd)
+  if (sessionModeOverride) {
+    config.permissions = { ...config.permissions, mode: sessionModeOverride }
+  }
+  return config
+}
+
 async function handleToolCall(name: string, args: Record<string, unknown>): Promise<unknown> {
   const projectCwd = cwd()
-  const config = loadConfig(projectCwd)
+  const config = effectiveConfig(projectCwd)
   const registry = loadRegistry(projectCwd, config)
 
   if (name === 'skills_list') {
@@ -196,7 +206,7 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
   }
 
   if (name === 'skills_run') {
-    return executePlan(registry, String(args.task ?? ''), projectCwd)
+    return executePlan(registry, String(args.task ?? ''), projectCwd, config.permissions)
   }
 
   if (name === 'skills_search_sh') {
@@ -207,6 +217,11 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
   }
 
   if (name === 'skills_auto_fetch') {
+    const enforcer = new PermissionEnforcer(new PermissionPolicy(config.permissions))
+    const fetchCheck = enforcer.checkTool('network', `skills.sh auto-fetch`)
+    if (fetchCheck.decision !== 'allowed') {
+      throw new Error(`skills_auto_fetch blocked: ${fetchCheck.reason}`)
+    }
     const task = String(args.task ?? '').trim()
     const result = await autoFetchSkills(task, registry, config.autoFetch!, projectCwd, config.permissions)
     return result
@@ -239,7 +254,11 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
 
   if (name === 'skills_init') {
     const modeOverride = String(args.mode ?? '').trim()
-    const effectiveMode = modeOverride || config.permissions?.mode || 'full-access'
+    const validModes: readonly string[] = ['read-only', 'workspace-write', 'full-access', 'prompt'] as const
+    sessionModeOverride = modeOverride && validModes.includes(modeOverride)
+      ? (modeOverride as PermissionMode)
+      : undefined
+    const effectiveMode = sessionModeOverride ?? (config.permissions?.mode || 'full-access')
     const enforcer = new PermissionEnforcer(new PermissionPolicy({
       ...config.permissions,
       mode: effectiveMode as PermissionMode,
@@ -278,6 +297,11 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
   }
 
   if (name === 'skills_import_from_skills_sh') {
+    const enforcer = new PermissionEnforcer(new PermissionPolicy(config.permissions))
+    const importCheck = enforcer.checkTool('network', `skills.sh ${args.source}`)
+    if (importCheck.decision !== 'allowed') {
+      throw new Error(`skills_import_from_skills_sh blocked: ${importCheck.reason}`)
+    }
     const source = String(args.source ?? '').trim()
     const forwardedArgs = Array.isArray(args.args) ? args.args.map(value => String(value)) : []
     const beforeIds = new Set(registry.skills.map(skill => skill.id))
