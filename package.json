@@ -1,6 +1,6 @@
 {
   "name": "skillfully",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Skill orchestration layer for coding agents — MCP server, permissions, auto-fetch from skills.sh",
   "bin": {
@@ -27,5 +27,5 @@
     "README.md",
     "skill-layer.config.json"
   ],
-  "postinstall": "node -e \"console.log('\\n  SkillFully installed! Run `skillfully --setup` to configure for this project.\\n  MCP server: `skillfully-mcp`\\n  Docs: https://github.com/Ron757/SkillFully\\n')\""
+  "postinstall": "node -e \"try{require('child_process').execSync('node '+require('path').join(__dirname,'dist','cli.js')+' --setup',{stdio:'inherit'})}catch(e){}\""
 }

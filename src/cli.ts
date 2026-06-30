@@ -50,19 +50,15 @@ function parseArgs(argv: string[]): ParsedArgs {
 function usage(): string {
   return [
     'Usage:',
-    '  bun run src/cli.ts skills list',
-    '  bun run src/cli.ts skills inspect <skill-id>',
-    '  bun run src/cli.ts route "<task>" [--path file.ts]',
-    '  bun run src/cli.ts plan "<task>" [--path file.ts] [--json]',
-    '  bun run src/cli.ts run "<task>" [--json]',
-    '  bun run src/cli.ts search "<query>"',
-    '  bun run src/cli.ts auto-fetch "<task>"',
-    '  bun run src/cli.ts install /path/to/skill',
-    '  bun run src/cli.ts import openclaude',
-    '  bun run src/cli.ts import claw-compatible',
-    '  bun run src/cli.ts import all',
-    '  bun run src/cli.ts import skills.sh <source> --list',
-    '  bun run src/cli.ts import skills.sh <source> --skill <name>',
+    '  skillfully list',
+    '  skillfully inspect <skill-id>',
+    '  skillfully init',
+    '  skillfully run "<task>"',
+    '  skillfully plan "<task>" [--path file.ts] [--json]',
+    '  skillfully search "<query>"',
+    '  skillfully auto-fetch "<task>"',
+    '  skillfully install /path/to/skill',
+    '  skillfully import skills.sh <source> --skill <name>',
   ].join('\n')
 }
 
@@ -183,8 +179,18 @@ async function main(): Promise<void> {
 
   const [command, ...rest] = args.positional
 
-  if (command === '--setup' || command === 'setup') {
+  if (command === '--setup' || command === 'setup' || command === 'init') {
     printSetup()
+    return
+  }
+
+  if (command === 'list') {
+    printSkills()
+    return
+  }
+
+  if (command === 'inspect') {
+    inspectSkill(rest[0] ?? '')
     return
   }
 
@@ -196,18 +202,11 @@ async function main(): Promise<void> {
   const subcommand = rest[0]
   const subcommandRest = rest.slice(1)
 
-  if (!command) {
-    console.log(usage())
-    return
-  }
-
-  if (command === 'skills' && subcommand === 'list') {
-    printSkills()
-    return
-  }
-
-  if (command === 'skills' && subcommand === 'inspect') {
-    inspectSkill(subcommandRest[0] ?? '')
+  // Alias: `skillfully skills list` etc.
+  if (command === 'skills') {
+    if (subcommand === 'list') printSkills()
+    else if (subcommand === 'inspect') inspectSkill(subcommandRest[0] ?? '')
+    else console.log(usage())
     return
   }
 

@@ -162,6 +162,7 @@ function toolDefinitions() {
 }
 
 let sessionModeOverride: PermissionMode | undefined
+let sessionAutoFetched = false
 
 function effectiveConfig(projectCwd: string) {
   const config = loadConfig(projectCwd)
@@ -277,6 +278,14 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
       dangerSummary[level] = (dangerSummary[level] ?? 0) + 1
     }
 
+    if (registry.skills.length < 3 && !sessionAutoFetched) {
+      sessionAutoFetched = true
+      const baseQueries = ['shell', 'file', 'research', 'git', 'notion']
+      for (const query of baseQueries) {
+        autoFetchSkills(query, registry, config.autoFetch!, projectCwd, config.permissions).catch(() => {})
+      }
+    }
+
     return {
       ready: true,
       guardrails,
@@ -291,7 +300,7 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
       },
       server: {
         name: 'skills-mvp',
-        version: '0.1.0',
+        version: '0.2.0',
       },
     }
   }
@@ -349,7 +358,7 @@ async function handleRequest(request: JsonRpcRequest): Promise<void> {
           },
           serverInfo: {
             name: 'skillfully',
-            version: '0.1.0',
+            version: '0.2.0',
           },
         })
         return
