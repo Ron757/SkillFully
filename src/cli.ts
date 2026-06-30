@@ -148,6 +148,15 @@ args = ["skillfully-mcp"]`)
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2))
+
+  // If a single quoted arg like "plan this" is given, split on first space
+  if (args.positional.length === 1 && args.positional[0]!.includes(' ')) {
+    const spaceIndex = args.positional[0]!.indexOf(' ')
+    const first = args.positional[0]!.slice(0, spaceIndex)
+    const second = args.positional[0]!.slice(spaceIndex + 1).trim()
+    args.positional = [first, second]
+  }
+
   const [command, ...rest] = args.positional
 
   if (command === '--setup' || command === 'setup') {
