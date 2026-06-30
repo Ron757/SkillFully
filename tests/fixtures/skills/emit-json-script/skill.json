@@ -1,0 +1,8 @@
+{
+  "entry": {
+    "type": "shell",
+    "command": ["/bin/sh", "scripts/run.sh"]
+  },
+  "produces": ["script_output"],
+  "examples": ["Emit a JSON status report"]
+}

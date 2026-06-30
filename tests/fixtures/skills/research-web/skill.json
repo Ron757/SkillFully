@@ -1,0 +1,8 @@
+{
+  "domains": ["research", "analysis"],
+  "examples": [
+    "Research the latest browser agents",
+    "Collect source-backed notes on a company"
+  ],
+  "produces": ["research_notes"]
+}
