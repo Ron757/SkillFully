@@ -1,0 +1,27 @@
+{
+  "name": "skillfully",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Skill orchestration layer for coding agents — MCP server, permissions, auto-fetch from skills.sh",
+  "bin": {
+    "skillfully": "./dist/cli.js",
+    "skills": "./dist/cli.js",
+    "skillfully-mcp": "./dist/mcp-server.js"
+  },
+  "scripts": {
+    "build": "bun build ./src/cli.ts --outdir ./dist --target node && bun build ./src/mcp-server.ts --outdir ./dist --target node",
+    "fix-shebangs": "node -e \"const fs=require('fs');['dist/cli.js','dist/mcp-server.js'].forEach(f=>{const c=fs.readFileSync(f,'utf8');const cleaned=c.replace(/^#!.*?\\n/,'');fs.writeFileSync(f,'#!/usr/bin/env node\\n'+cleaned)})\"",
+    "postbuild": "bun run fix-shebangs",
+    "prepublishOnly": "bun run build",
+    "setup": "node ./dist/cli.js --setup",
+    "mcp": "bun run src/mcp-server.ts",
+    "test": "bun test tests"
+  },
+  "files": [
+    "dist",
+    "src",
+    "docs",
+    "README.md",
+    "skill-layer.config.json"
+  ]
+}

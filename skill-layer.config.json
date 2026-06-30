@@ -1,0 +1,24 @@
+{
+  "skillRoots": [
+    "./skills",
+    "./.agents/skills",
+    "./.codex/skills",
+    "./.claude/skills",
+    "./.claw/skills"
+  ],
+  "plannerTopK": 8,
+  "maxPlanSteps": 3,
+  "autoFetch": {
+    "enabled": false,
+    "threshold": 20,
+    "maxResults": 5,
+    "knownSources": ["vercel-labs/agent-skills"]
+  },
+  "permissions": {
+    "mode": "full-access",
+    "allow": [],
+    "deny": [],
+    "ask": [],
+    "trustedRoots": []
+  }
+}
