@@ -58,7 +58,7 @@ export interface SkillDefinition {
   source: string
 }
 
-export type PermissionMode = 'read-only' | 'workspace-write' | 'full-access' | 'prompt' | 'allow'
+export type PermissionMode = 'read-only' | 'workspace-write' | 'full-access' | 'prompt'
 
 export type PermissionAction = 'allow' | 'deny' | 'ask'
 

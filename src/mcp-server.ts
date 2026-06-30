@@ -151,7 +151,7 @@ function toolDefinitions() {
         properties: {
           mode: {
             type: 'string',
-            enum: ['read-only', 'workspace-write', 'full-access', 'allow', 'prompt'],
+            enum: ['read-only', 'workspace-write', 'full-access', 'prompt'],
             description: 'Optional permission mode override for this session. Overrides config file and env var.',
           },
         },

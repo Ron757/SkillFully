@@ -14,7 +14,6 @@ const MODE_ORDER: Record<PermissionMode, number> = {
   'workspace-write': 1,
   'full-access': 2,
   'prompt': 3,
-  'allow': 4,
 }
 
 const DEFAULT_PERMISSIONS: PermissionConfig = {
@@ -63,14 +62,6 @@ function dangerRequirement(level: DangerLevel | undefined): PermissionMode {
 
 function modeAtLeast(actual: PermissionMode, required: PermissionMode): boolean {
   return MODE_ORDER[actual] >= MODE_ORDER[required]
-}
-
-function parseRule(raw: string): PermissionRule | null {
-  const parenIndex = raw.indexOf('(')
-  if (parenIndex === -1) {
-    return { pattern: raw.trim(), action: 'allow' }
-  }
-  return { pattern: raw.trim(), action: 'allow' }
 }
 
 function matchRule(pattern: string, toolName: string, input: string): boolean {
@@ -139,10 +130,6 @@ export class PermissionPolicy {
   }
 
   authorize(toolName: string, input: string = ''): PermissionResult {
-    if (this.config.mode === 'allow') {
-      return { decision: 'allowed', reason: 'allow mode' }
-    }
-
     for (const rule of this.rules) {
       if (matchRule(rule.pattern, toolName, input)) {
         if (rule.action === 'deny') {

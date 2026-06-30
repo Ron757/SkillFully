@@ -121,14 +121,13 @@ This makes guardrails **universally applied** — every MCP host gets the same e
 
 ## Permissions & Guardrails
 
-Five modes, ordered from least to most permissive:
+Four modes, ordered from least to most permissive:
 
 | Mode | What's allowed |
 |------|---------------|
-| `allow` | Everything — no rules enforced |
-| `full-access` | All tools, all operations |
-| `workspace-write` | Read + write files; no shell/network |
 | `read-only` | Read files and search only |
+| `workspace-write` | Read + write files; no shell/network |
+| `full-access` | All tools, all operations |
 | `prompt` | Everything requires approval (MCP limitation: returns `needs-approval`, no interactive prompt) |
 
 **Tool requirements** (hardcoded):
@@ -274,6 +273,44 @@ Env overrides:
 | `SKILL_LAYER_PERMISSION_MODE` | Permission mode override |
 | `SKILLS_SH_OIDC_TOKEN` | OIDC token for skills.sh v1 API |
 | `VERCEL_OIDC_TOKEN` | Alternate OIDC token |
+
+---
+
+## Security Boundaries
+
+### Threat model
+
+The permission system assumes the **MCP host (agent)** may send malicious or
+incorrect tool calls. It does **not** protect against:
+
+- A compromised Host → can call any tool the server exposes
+- A malicious skill author → can embed dangerous instructions that the host
+  follows blindly
+- Side-channel data exfiltration through allowed tools (e.g. reading files
+  is allowed in `read-only` mode, so file content can be leaked through the
+  host's response)
+
+What it does protect against:
+
+| Threat | How it's blocked |
+|--------|-----------------|
+| Agent deletes files | Deny rule `bash(rm *)` or restrict to `workspace-write` |
+| Agent runs arbitrary shell | Requires `full-access` mode |
+| Skill with dangerous tools executes in low-permission session | `checkSkill()` gates by required tool level + danger level |
+| Unfettered internet access | `network` requires `full-access` |
+
+### Mode lifecycle
+
+1. Default mode loaded from `skill-layer.config.json` (or env override)
+2. Host can **further restrict** mode per-session via `skills_init({ mode })`
+3. Attempts to escalate mode are ignored — the session starts at the most
+   restrictive of (config, env, host override)
+
+### Enforcing at the boundary
+
+The permission check runs server-side, **before** any tool or skill
+execution. The host cannot bypass the check — it only learns the `decision`
+(`allowed` / `denied` / `needs-approval`).
 
 ---
 

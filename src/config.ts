@@ -80,7 +80,12 @@ export function loadConfig(cwd: string): RuntimeConfig {
       parsed.autoFetch?.vercelOidcToken,
   }
 
-  const envMode = process.env.SKILL_LAYER_PERMISSION_MODE as PermissionConfig['mode'] | undefined
+  let envMode = process.env.SKILL_LAYER_PERMISSION_MODE as PermissionConfig['mode'] | undefined
+
+  const validModes: PermissionConfig['mode'][] = ['read-only', 'workspace-write', 'full-access', 'prompt']
+  if (envMode && !validModes.includes(envMode)) {
+    envMode = undefined
+  }
 
   const permissions: PermissionConfig = {
     ...DEFAULT_PERMISSIONS,
