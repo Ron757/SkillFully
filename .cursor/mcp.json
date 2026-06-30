@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "skills-mvp": {
+      "command": "bun",
+      "args": ["run", "src/mcp-server.ts"]
+    }
+  }
+}
